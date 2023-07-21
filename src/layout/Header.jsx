@@ -43,6 +43,12 @@ function Header({ setState, activeChats }) {
       // Show the file save dialog.
       const handle = await window.showSaveFilePicker({
         suggestedName: "chat-archive.json",
+        types: [
+          {
+            description: "Json file",
+            accept: { "text/plain": [".json"] },
+          },
+        ],
       });
       const writable = await handle.createWritable();
       await writable.write(blob);
