@@ -14,15 +14,14 @@ function ChatList({ activeChats, setState, currentChat }) {
   return (
     <div className="w-[300px] overflow-auto">
       <ul>
-        {activeChats &&
-          activeChats.map((el, index) => (
-            <ChatListItem
-              key={index}
-              item={el}
-              currentChat={currentChat}
-              handleClick={handleClick}
-            />
-          ))}
+        {activeChats?.map((el, index) => (
+          <ChatListItem
+            key={index}
+            item={el}
+            currentChat={currentChat}
+            handleClick={handleClick}
+          />
+        ))}
       </ul>
     </div>
   );

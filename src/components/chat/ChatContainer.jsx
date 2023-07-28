@@ -1,6 +1,6 @@
 import React from "react";
 import ChatList from "./ChatList";
-import ViewChat from "../../pages/ViewChat";
+import ChatMessages from "./ChatMessages";
 
 function ChatContainer({ state, setState }) {
   return (
@@ -10,7 +10,7 @@ function ChatContainer({ state, setState }) {
         setState={setState}
         currentChat={state.currentChat}
       />
-      <ViewChat currentChat={state.currentChat} />
+      <ChatMessages currentChat={state.currentChat} />
     </div>
   );
 }
