@@ -1,29 +1,20 @@
 import React from "react";
+import Button from "../components/common/Button";
+
+import { handleFile, saveFilePicker } from "../utils/fileUtils";
 
 function Header({ setState, activeChats }) {
-  const handleFile = (e) => {
-    let reader = new FileReader();
+  const handleImport = (e) => {
     let file = e.target.files[0];
-
-    if (file) {
-      var extension = file.name.split(".").pop().toLowerCase();
-      var isSuccess = ["json"].indexOf(extension) > -1;
-    }
-
-    if (isSuccess) {
-      reader.onloadend = () => {
-        console.log(reader.result);
+    handleFile(file)
+      .then((res) => {
         setState((state) => ({
           ...state,
-          activeChats: JSON.parse(reader.result),
+          activeChats: res,
         }));
-        localStorage.setItem("chatList", reader.result);
-      };
-
-      reader.readAsText(file);
-    } else {
-      console.log("wrong format");
-    }
+        localStorage.setItem("chatList", JSON.stringify(res));
+      })
+      .catch((e) => console.log(e));
   };
 
   const clearBtn = (e) => {
@@ -36,30 +27,9 @@ function Header({ setState, activeChats }) {
     }));
   };
 
-  const saveFilePicker = async (e) => {
+  const handleExport = (e) => {
     e.preventDefault();
-    const blob = new Blob([JSON.stringify(activeChats)]);
-    try {
-      // Show the file save dialog.
-      const handle = await window.showSaveFilePicker({
-        suggestedName: "chat-archive.json",
-        types: [
-          {
-            description: "Json file",
-            accept: { "text/plain": [".json"] },
-          },
-        ],
-      });
-      const writable = await handle.createWritable();
-      await writable.write(blob);
-      await writable.close();
-    } catch (error) {
-      // Fail silently if the user has simply canceled the dialog.
-      if (error) {
-        return;
-      }
-      throw error;
-    }
+    saveFilePicker(activeChats);
   };
 
   return (
@@ -76,24 +46,12 @@ function Header({ setState, activeChats }) {
           className="hidden"
           type="file"
           id="content"
-          onChange={handleFile}
+          onChange={(e) => handleImport(e)}
         />
       </div>
 
-      <button
-        type="button"
-        className="rounded-md bg-white px-3 py-2 text-sm  text-gray-900  ring-1 ring-inset ring-gray-300 hover:bg-gray-50 "
-        onClick={(e) => saveFilePicker(e)}
-      >
-        Export
-      </button>
-      <button
-        type="button"
-        className="rounded-md bg-white px-3 py-2 text-sm  text-gray-900  ring-1 ring-inset ring-gray-300 hover:bg-gray-50 "
-        onClick={clearBtn}
-      >
-        Clear
-      </button>
+      <Button title="Export" handleClick={handleExport} />
+      <Button title="Clear" handleClick={clearBtn} />
     </header>
   );
 }

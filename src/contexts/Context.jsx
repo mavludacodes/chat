@@ -7,12 +7,10 @@ export function useChatControllerContext() {
 }
 
 export function ChatContextProvider({ children }) {
-  const savedContent = localStorage.getItem("chatList");
-  const savedCurrentChat = localStorage.getItem("currentChat");
   const [state, setState] = useState({
-    activeChats: savedContent ? JSON.parse(savedContent) : [],
+    activeChats: [],
     archivedChats: [],
-    currentChat: savedContent ? JSON.parse(savedCurrentChat) : undefined,
+    currentChat: undefined,
   });
 
   return (
