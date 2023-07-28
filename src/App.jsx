@@ -2,13 +2,13 @@ import React, { useEffect } from "react";
 import { useChatControllerContext } from "./contexts/Context";
 import "./App.css";
 import Header from "./layout/Header";
-import Sidebar from "./layout/Sidebar";
-import ViewChat from "./pages/ViewChat";
+import ChatContainer from "./components/chat/ChatContainer";
 
 function App() {
-  const [state, setState] = useChatControllerContext();
   const savedContent = localStorage.getItem("chatList");
   const savedCurrentChat = localStorage.getItem("currentChat");
+
+  const [state, setState] = useChatControllerContext();
 
   useEffect(() => {
     setState((state) => ({
@@ -21,14 +21,7 @@ function App() {
   return (
     <>
       <Header setState={setState} activeChats={state.activeChats} />
-      <div className="mx-10 flex h-[450px]">
-        <Sidebar
-          activeChats={state.activeChats}
-          setState={setState}
-          currentChat={state.currentChat}
-        />
-        <ViewChat currentChat={state.currentChat} />
-      </div>
+      <ChatContainer state={state} setState={setState} />
     </>
   );
 }
